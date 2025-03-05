@@ -15,7 +15,10 @@
  */
 package wls.langchain4j.samples.coffee.shop.assistant.ai;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import dev.langchain4j.service.SystemMessage;
+import wls.langchain4j.api.Ai;
 
 /**
  * AI-powered assistant service for a coffee shop.
@@ -24,6 +27,9 @@ import dev.langchain4j.service.SystemMessage;
  * The chat model and content provider implementations are automatically retrieved from
  * the service registry.
  */
+@Ai.Service
+@Ai.ChatModel("coffeeChatModel")
+@ApplicationScoped
 public interface ChatAiService {
 
     /**

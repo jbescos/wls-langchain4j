@@ -19,11 +19,15 @@ package wls.langchain4j.openai;
 import java.net.Proxy;
 import java.nio.file.Path;
 
-import dev.langchain4j.model.openai.OpenAiImageModel;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.eclipse.microprofile.config.ConfigProvider;
+
+import dev.langchain4j.model.openai.OpenAiImageModel;
+import wls.langchain4j.cdi.BeanName;
+import wls.langchain4j.cdi.BeanResolver;
+import wls.langchain4j.cdi.ConditionalProduce;
+import wls.langchain4j.cdi.ConfigurationProvider;
 
 /**
  * Factory class for creating a configured {@link OpenAiImageModel}.
@@ -62,7 +66,7 @@ public class OpenAiImageModelFactory {
     @ConditionalProduce(key = "langchain4j.open-ai.image-model.enabled", value = "true")
     @Named("openAiImageModel")
     public OpenAiImageModel create() {
-        var config = MpConfig.toHelidonConfig(ConfigProvider.getConfig()).get(OpenAiImageModelConfig.CONFIG_ROOT);
+        var config = MpConfig.toHelidonConfig(ConfigurationProvider.getConfig()).get(OpenAiImageModelConfig.CONFIG_ROOT);
         return create(OpenAiImageModelConfig.create(config));
     }
 

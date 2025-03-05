@@ -19,7 +19,9 @@ package wls.langchain4j.cdi;
 import java.util.ArrayList;
 import java.util.List;
 
-import wls.langchain4j.api.*;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.CDI;
+
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
@@ -29,13 +31,10 @@ import dev.langchain4j.model.moderation.ModerationModel;
 import dev.langchain4j.rag.RetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.service.AiServices;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.CDI;
-import javax.inject.Inject;
+import wls.langchain4j.api.Ai;
 
 /**
- * A helper CDI bean used internally to create implementations for AI services using LangChain4J APIs.
+ * Used internally to create implementations for AI services using LangChain4J APIs.
  *
  * <p>This bean facilitates the creation and registration of AI service implementations within the CDI container.
  * It leverages LangChain4J APIs to dynamically generate the necessary service implementations based on the
@@ -45,19 +44,11 @@ import javax.inject.Inject;
  * to ensure that AI services are correctly instantiated and integrated into the CDI context, allowing developers to
  * focus on defining and using these services.</p>
  */
-@ApplicationScoped
-public class AiServiceFactory {
+class AiServiceFactory {
 
-    private BeanResolver beanResolver;
-    private BeanManager beanManager;
+    private final BeanManager beanManager;
 
-    // Required by CDI
-    protected AiServiceFactory() {
-    }
-
-    @Inject
-    AiServiceFactory(BeanResolver beanResolver, BeanManager beanManager) {
-        this.beanResolver = beanResolver;
+    AiServiceFactory(BeanManager beanManager) {
         this.beanManager = beanManager;
     }
 
@@ -75,73 +66,73 @@ public class AiServiceFactory {
 
         var chatModelAnnotation = serviceInterface.getAnnotation(Ai.ChatModel.class);
         if (chatModelAnnotation == null) {
-            var instance = beanResolver.instance(ChatLanguageModel.class);
+            var instance = BeanResolver.instance(ChatLanguageModel.class);
             if (autoDiscoveryMode && !instance.isUnsatisfied()) {
                 builder.chatLanguageModel(instance.get());
             }
         } else {
-            builder.chatLanguageModel(beanResolver.resolve(ChatLanguageModel.class, chatModelAnnotation.value()));
+            builder.chatLanguageModel(BeanResolver.resolve(ChatLanguageModel.class, chatModelAnnotation.value()));
         }
 
         var streamingChatModelAnnotation = serviceInterface.getAnnotation(Ai.StreamingChatModel.class);
         if (streamingChatModelAnnotation == null) {
-            var instance = beanResolver.instance(StreamingChatLanguageModel.class);
+            var instance = BeanResolver.instance(StreamingChatLanguageModel.class);
             if (autoDiscoveryMode && !instance.isUnsatisfied()) {
                 builder.streamingChatLanguageModel(instance.get());
             }
         } else {
-            builder.streamingChatLanguageModel(beanResolver.resolve(StreamingChatLanguageModel.class,
+            builder.streamingChatLanguageModel(BeanResolver.resolve(StreamingChatLanguageModel.class,
                                                                     streamingChatModelAnnotation.value()));
         }
 
         var chatMemoryAnnotation = serviceInterface.getAnnotation(Ai.ChatMemory.class);
         if (chatMemoryAnnotation == null) {
-            var instance = beanResolver.instance(ChatMemory.class);
+            var instance = BeanResolver.instance(ChatMemory.class);
             if (autoDiscoveryMode && !instance.isUnsatisfied()) {
                 builder.chatMemory(instance.get());
             }
         } else {
-            builder.chatMemory(beanResolver.resolve(ChatMemory.class, chatMemoryAnnotation.value()));
+            builder.chatMemory(BeanResolver.resolve(ChatMemory.class, chatMemoryAnnotation.value()));
         }
 
         var chatMemoryProviderAnnotation = serviceInterface.getAnnotation(Ai.ChatMemoryProvider.class);
         if (chatMemoryProviderAnnotation == null) {
-            var instance = beanResolver.instance(ChatMemoryProvider.class);
+            var instance = BeanResolver.instance(ChatMemoryProvider.class);
             if (autoDiscoveryMode && !instance.isUnsatisfied()) {
                 builder.chatMemoryProvider(instance.get());
             }
         } else {
-            builder.chatMemoryProvider(beanResolver.resolve(ChatMemoryProvider.class, chatMemoryProviderAnnotation.value()));
+            builder.chatMemoryProvider(BeanResolver.resolve(ChatMemoryProvider.class, chatMemoryProviderAnnotation.value()));
         }
 
         var moderationModelAnnotation = serviceInterface.getAnnotation(Ai.ModerationModel.class);
         if (moderationModelAnnotation == null) {
-            var instance = beanResolver.instance(ModerationModel.class);
+            var instance = BeanResolver.instance(ModerationModel.class);
             if (autoDiscoveryMode && !instance.isUnsatisfied()) {
                 builder.moderationModel(instance.get());
             }
         } else {
-            builder.moderationModel(beanResolver.resolve(ModerationModel.class, moderationModelAnnotation.value()));
+            builder.moderationModel(BeanResolver.resolve(ModerationModel.class, moderationModelAnnotation.value()));
         }
 
         var retrievalAugmentorAnnotation = serviceInterface.getAnnotation(Ai.RetrievalAugmentor.class);
         if (retrievalAugmentorAnnotation == null) {
-            var instance = beanResolver.instance(RetrievalAugmentor.class);
+            var instance = BeanResolver.instance(RetrievalAugmentor.class);
             if (autoDiscoveryMode && !instance.isUnsatisfied()) {
                 builder.retrievalAugmentor(instance.get());
             }
         } else {
-            builder.retrievalAugmentor(beanResolver.resolve(RetrievalAugmentor.class, retrievalAugmentorAnnotation.value()));
+            builder.retrievalAugmentor(BeanResolver.resolve(RetrievalAugmentor.class, retrievalAugmentorAnnotation.value()));
         }
 
         var contentRetrieverAnnotation = serviceInterface.getAnnotation(Ai.ContentRetriever.class);
         if (contentRetrieverAnnotation == null) {
-            var instance = beanResolver.instance(ContentRetriever.class);
+            var instance = BeanResolver.instance(ContentRetriever.class);
             if (autoDiscoveryMode && !instance.isUnsatisfied()) {
                 builder.contentRetriever(instance.get());
             }
         } else {
-            builder.contentRetriever(beanResolver.resolve(ContentRetriever.class, contentRetrieverAnnotation.value()));
+            builder.contentRetriever(BeanResolver.resolve(ContentRetriever.class, contentRetrieverAnnotation.value()));
         }
 
         var toolsAnnotation = serviceInterface.getAnnotation(Ai.Tools.class);

@@ -17,13 +17,20 @@
 package wls.langchain4j.openai;
 
 import java.net.Proxy;
+import java.time.Duration;
+import java.util.Map;
 
-import dev.langchain4j.model.Tokenizer;
-import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.eclipse.microprofile.config.ConfigProvider;
+
+import dev.langchain4j.model.Tokenizer;
+import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
+import dev.langchain4j.model.openai.OpenAiEmbeddingModel.OpenAiEmbeddingModelBuilder;
+import wls.langchain4j.cdi.BeanName;
+import wls.langchain4j.cdi.BeanResolver;
+import wls.langchain4j.cdi.ConditionalProduce;
+import wls.langchain4j.cdi.ConfigurationProvider.Configuration;
 
 /**
  * Factory class for creating a configured {@link OpenAiEmbeddingModel}.
@@ -32,25 +39,19 @@ import org.eclipse.microprofile.config.ConfigProvider;
  * configuration property <i>langchain4j.open-ai.embedding-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see OpenAiEmbeddingModel
- * @see OpenAiEmbeddingModelConfig
  */
 @ApplicationScoped
 public class OpenAiEmbeddingModelFactory {
 
-    private BeanResolver beanResolver;
+    private Configuration configuration;
 
     // Required by CDI
     protected OpenAiEmbeddingModelFactory() {
     }
 
-    /**
-     * Creates {@link io.helidon.integrations.langchain4j.providers.ollama.OpenAiEmbeddingModelFactory}.
-     *
-     * @param beanResolver helper class containing methods for CDI beans resolving
-     */
     @Inject
-    public OpenAiEmbeddingModelFactory(BeanResolver beanResolver) {
-        this.beanResolver = beanResolver;
+    public OpenAiEmbeddingModelFactory(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     /**
@@ -63,35 +64,22 @@ public class OpenAiEmbeddingModelFactory {
     @ConditionalProduce(key = "langchain4j.open-ai.embedding-model.enabled", value = "true")
     @Named("openAiEmbeddingModel")
     public OpenAiEmbeddingModel create() {
-        var config = MpConfig.toHelidonConfig(ConfigProvider.getConfig())
-                .get(OpenAiEmbeddingModelConfig.CONFIG_ROOT);
-
-        return create(OpenAiEmbeddingModelConfig.create(config));
-    }
-
-    /**
-     * Creates and returns an {@link dev.langchain4j.model.openai.OpenAiEmbeddingModel} configured using the provided
-     * configuration bean.
-     *
-     * @param config configuration bean
-     * @return a configured instance of {@link dev.langchain4j.model.openai.OpenAiEmbeddingModel}
-     */
-    public OpenAiEmbeddingModel create(OpenAiEmbeddingModelConfig config) {
-        var builder = OpenAiEmbeddingModel.builder();
-        config.baseUrl().ifPresent(builder::baseUrl);
-        config.apiKey().ifPresent(builder::apiKey);
-        config.organizationId().ifPresent(builder::organizationId);
-        config.modelName().ifPresent(builder::modelName);
-        config.dimensions().ifPresent(builder::dimensions);
-        config.user().ifPresent(builder::user);
-        config.timeout().ifPresent(builder::timeout);
-        config.maxRetries().ifPresent(builder::maxRetries);
-        config.logRequests().ifPresent(builder::logRequests);
-        config.logResponses().ifPresent(builder::logResponses);
-        config.tokenizer().ifPresent(t -> builder.tokenizer(beanResolver.resolve(Tokenizer.class, BeanName.create(t))));
-        config.proxy().ifPresent(p -> builder.proxy(beanResolver.resolve(Proxy.class, BeanName.create(p))));
-        if (!config.customHeaders().isEmpty()) {
-            builder.customHeaders(config.customHeaders());
+        OpenAiEmbeddingModelBuilder builder = OpenAiEmbeddingModel.builder();
+        configuration.getString("base-url").ifPresent(builder::baseUrl);
+        configuration.getString("api-key").ifPresent(builder::apiKey);
+        configuration.getString("organization-id").ifPresent(builder::organizationId);
+        configuration.getString("model-name").ifPresent(builder::modelName);
+        configuration.getInteger("dimensions").ifPresent(builder::dimensions);
+        configuration.getString("user").ifPresent(builder::user);
+        configuration.getLong("timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("log-responses").ifPresent(builder::logResponses);
+        configuration.getString("tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
+        configuration.getString("proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        Map<String, String> customHeaders = configuration.getMapString("custom-headers");
+        if (!customHeaders.isEmpty()) {
+            builder.customHeaders(customHeaders);
         }
         return builder.build();
     }

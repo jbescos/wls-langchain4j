@@ -16,18 +16,17 @@
 
 package wls.langchain4j.cdi;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.literal.NamedLiteral;
 import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.util.TypeLiteral;
 
 /**
- * A CDI bean that provides helper methods for resolving beans.
+ * Provides helper methods for resolving beans.
  */
-@ApplicationScoped
-public class BeanResolver {
-    BeanResolver() {
+public final class BeanResolver {
+
+    private BeanResolver() {
     }
 
     /**
@@ -40,7 +39,7 @@ public class BeanResolver {
      * @param beanName an instance of {@link BeanName} specifying either automatic discovery or an explicit bean name
      * @return the resolved bean instance
      */
-    public <T> T resolve(Class<T> type, BeanName beanName) {
+    public static <T> T resolve(Class<T> type, BeanName beanName) {
         if (beanName == null || beanName.isAutoDiscover()) {
             return resolve(type);
         } else {
@@ -58,7 +57,7 @@ public class BeanResolver {
      * @param beanName    an instance of {@link BeanName} specifying either automatic discovery or an explicit bean name
      * @return the resolved bean instance
      */
-    public <T> T resolve(TypeLiteral<T> typeLiteral, BeanName beanName) {
+    public static <T> T resolve(TypeLiteral<T> typeLiteral, BeanName beanName) {
         if (beanName == null || beanName.isAutoDiscover()) {
             return instance(typeLiteral).get();
         } else {
@@ -73,7 +72,7 @@ public class BeanResolver {
      * @param type the class of the bean to retrieve
      * @return an {@link Instance} of the specified bean type
      */
-    public <T> Instance<T> instance(Class<T> type) {
+    public static <T> Instance<T> instance(Class<T> type) {
         return CDI.current().select(type);
     }
 
@@ -84,7 +83,7 @@ public class BeanResolver {
      * @param type the {@link TypeLiteral} of the bean to retrieve
      * @return an {@link Instance} of the specified type literal
      */
-    public <T> Instance<T> instance(TypeLiteral<T> type) {
+    public static <T> Instance<T> instance(TypeLiteral<T> type) {
         return CDI.current().select(type);
     }
 
@@ -95,7 +94,7 @@ public class BeanResolver {
      * @param type the class of the bean to resolve
      * @return the resolved bean instance
      */
-    public <T> T resolve(Class<T> type) {
+    public static <T> T resolve(Class<T> type) {
         return instance(type).get();
     }
 
@@ -107,7 +106,7 @@ public class BeanResolver {
      * @param name the name of the bean
      * @return the resolved bean instance
      */
-    public <T> T resolve(Class<T> type, String name) {
+    public static <T> T resolve(Class<T> type, String name) {
         var instance = CDI.current().select(type, NamedLiteral.of(name));
         return instance.get();
     }
@@ -120,7 +119,7 @@ public class BeanResolver {
      * @param name        the name of the bean
      * @return the resolved bean instance
      */
-    public <T> T resolve(TypeLiteral<T> typeLiteral, String name) {
+    public static <T> T resolve(TypeLiteral<T> typeLiteral, String name) {
         var instance = CDI.current().select(typeLiteral, NamedLiteral.of(name));
         return instance.get();
     }

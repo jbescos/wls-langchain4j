@@ -62,7 +62,7 @@ public class OpenAiLanguageModelFactory {
     @ConditionalProduce(key = "langchain4j.open-ai.language-model.enabled", value = "true")
     @Named("openAiLanguageModel")
     public OpenAiLanguageModel create() {
-        var config = MpConfig.toHelidonConfig(ConfigProvider.getConfig()).get(OpenAiLanguageModelConfig.CONFIG_ROOT);
+        var config = MpConfig.toHelidonConfig(ConfigurationProvider.getConfig()).get(OpenAiLanguageModelConfig.CONFIG_ROOT);
         return create(OpenAiLanguageModelConfig.create(config));
     }
 

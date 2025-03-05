@@ -16,27 +16,27 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>wls.langchain4j</groupId>
-	<artifactId>parent</artifactId>
-	<packaging>pom</packaging>
-	<version>1.0</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>wls.langchain4j</groupId>
+    <artifactId>parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
 
-	<modules>
-		<module>api</module>
-		<module>cdi</module>
-		<module>openai</module>
-		<module>samples</module>
-	</modules>
+    <modules>
+        <module>api</module>
+        <module>cdi</module>
+        <module>openai</module>
+        <module>samples</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.lib.cdi>2.0.2</version.lib.cdi>
+        <version.lib.cdi>2.0.1</version.lib.cdi>
         <version.lib.jaxrs>2.1.6</version.lib.jaxrs>
         <version.lib.langchain4j>0.36.2</version.lib.langchain4j>
     </properties>

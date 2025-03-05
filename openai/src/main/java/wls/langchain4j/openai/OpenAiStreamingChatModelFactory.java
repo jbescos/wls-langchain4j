@@ -63,7 +63,7 @@ public class OpenAiStreamingChatModelFactory {
     @ConditionalProduce(key = "langchain4j.open-ai.streaming-chat-model.enabled", value = "true")
     @Named("openAiStreamingChatModel")
     public OpenAiStreamingChatModel create() {
-        var config = MpConfig.toHelidonConfig(ConfigProvider.getConfig()).get(OpenAiStreamingChatModelConfig.CONFIG_ROOT);
+        var config = MpConfig.toHelidonConfig(ConfigurationProvider.getConfig()).get(OpenAiStreamingChatModelConfig.CONFIG_ROOT);
         return create(OpenAiStreamingChatModelConfig.create(config));
     }
 

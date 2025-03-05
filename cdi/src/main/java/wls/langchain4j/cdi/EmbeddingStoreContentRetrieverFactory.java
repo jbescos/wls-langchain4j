@@ -16,15 +16,17 @@
 
 package wls.langchain4j.cdi;
 
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
-import dev.langchain4j.store.embedding.EmbeddingStore;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.util.TypeLiteral;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.eclipse.microprofile.config.ConfigProvider;
+
+import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever.EmbeddingStoreContentRetrieverBuilder;
+import dev.langchain4j.store.embedding.EmbeddingStore;
+import wls.langchain4j.cdi.ConfigurationProvider.Configuration;
 
 /**
  * Factory class for creating a configured {@link EmbeddingStoreContentRetriever}.
@@ -35,7 +37,7 @@ import org.eclipse.microprofile.config.ConfigProvider;
 @ApplicationScoped
 public class EmbeddingStoreContentRetrieverFactory {
 
-    private BeanResolver beanResolver;
+    private Configuration configuration;
 
     // Required for CDI
     protected EmbeddingStoreContentRetrieverFactory() {
@@ -47,8 +49,8 @@ public class EmbeddingStoreContentRetrieverFactory {
      * @param beanResolver helper class containing methods for CDI beans resolving
      */
     @Inject
-    EmbeddingStoreContentRetrieverFactory(BeanResolver beanResolver) {
-        this.beanResolver = beanResolver;
+    EmbeddingStoreContentRetrieverFactory(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     /**
@@ -61,29 +63,17 @@ public class EmbeddingStoreContentRetrieverFactory {
     @ConditionalProduce(key = "langchain4j.rag.embedding-store-content-retriever.enabled", value = "true")
     @Named("embeddingStoreContentRetriever")
     public EmbeddingStoreContentRetriever create() {
-        var config = MpConfig.toHelidonConfig(ConfigProvider.getConfig()).get(EmbeddingStoreContentRetrieverConfig.CONFIG_ROOT);
-        return create(EmbeddingStoreContentRetrieverConfig.create(config));
-    }
-
-    /**
-     * Creates and returns an {@link EmbeddingStoreContentRetriever} configured using the provided configuration.
-     *
-     * @param config the configuration bean
-     * @return a configured instance of {@link EmbeddingStoreContentRetriever}
-     */
-    public EmbeddingStoreContentRetriever create(EmbeddingStoreContentRetrieverConfig config) {
-        var builder = EmbeddingStoreContentRetriever.builder();
-
-        config.embeddingModel().ifPresent(em -> builder.embeddingModel(
-                beanResolver.resolve(EmbeddingModel.class, BeanName.create(em))));
+        EmbeddingStoreContentRetrieverBuilder builder = EmbeddingStoreContentRetriever.builder();
+        configuration.getString("embedding-model").ifPresent(em -> builder.embeddingModel(
+                BeanResolver.resolve(EmbeddingModel.class, BeanName.create(em))));
 
         var typeLiteral = new TypeLiteral<EmbeddingStore<TextSegment>>() {};
-        config.embeddingStore().ifPresent(es -> builder.embeddingStore(
-                beanResolver.resolve(typeLiteral, BeanName.create(es))));
+        configuration.getString("embedding-store").ifPresent(es -> builder.embeddingStore(
+                BeanResolver.resolve(typeLiteral, BeanName.create(es))));
 
-        config.displayName().ifPresent(builder::displayName);
-        config.maxResults().ifPresent(builder::maxResults);
-        config.minScore().ifPresent(builder::minScore);
+        configuration.getString("display-name").ifPresent(builder::displayName);
+        configuration.getInteger("max-results").ifPresent(builder::maxResults);
+        configuration.getDouble("min-score").ifPresent(builder::minScore);
 
         return builder.build();
     }

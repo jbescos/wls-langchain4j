@@ -62,7 +62,7 @@ public class OpenAiModerationModelFactory {
     @ConditionalProduce(key = "langchain4j.open-ai.moderation-model.enabled", value = "true")
     @Named("openAiModerationModel")
     public OpenAiModerationModel create() {
-        var config = MpConfig.toHelidonConfig(ConfigProvider.getConfig()).get(OpenAiModerationModelConfig.CONFIG_ROOT);
+        var config = MpConfig.toHelidonConfig(ConfigurationProvider.getConfig()).get(OpenAiModerationModelConfig.CONFIG_ROOT);
         return create(OpenAiModerationModelConfig.create(config));
     }
 

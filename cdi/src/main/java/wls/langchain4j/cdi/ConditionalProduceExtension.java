@@ -20,14 +20,19 @@ import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.inject.Named;
+
+import wls.langchain4j.cdi.ConfigurationProvider.Configuration;
 
 /**
  * This class leverages CDI (Contexts and Dependency Injection) to dynamically produce and register beans based on
@@ -83,12 +88,14 @@ public class ConditionalProduceExtension implements Extension {
      * @param beanManager the {@link BeanManager} used to manage the lifecycle and dependencies of CDI beans
      */
     public void afterBeanDiscovery(@Observes AfterBeanDiscovery abd, BeanManager beanManager) {
+        // FIXME Obtain Configuration from CDI. I don't know how.
+        Configuration config = new ConfigurationProvider().configuration();
         for (var producerMethod : conditionalProducerMethods) {
             var conditionalProduce = producerMethod.getAnnotation(ConditionalProduce.class);
             var key = conditionalProduce.key();
             var value = conditionalProduce.value();
 
-            var propertyValue = ConfigProvider.getConfig().getOptionalValue(key, String.class);
+            var propertyValue = config.getString(key);
 
             // Only register the bean if the configuration property exists
             if (propertyValue.isPresent() && propertyValue.get().equals(value)) {
@@ -126,5 +133,10 @@ public class ConditionalProduceExtension implements Extension {
                 }
             }
         }
+    }
+
+    private <T> T getReference(Bean<T> bean, BeanManager beanManager) {
+        CreationalContext<T> creationalContext = beanManager.createCreationalContext(bean);
+        return (T) beanManager.getReference(bean, bean.getBeanClass(), creationalContext);
     }
 }

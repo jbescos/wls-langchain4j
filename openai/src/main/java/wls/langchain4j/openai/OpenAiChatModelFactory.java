@@ -17,13 +17,21 @@
 package wls.langchain4j.openai;
 
 import java.net.Proxy;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
-import dev.langchain4j.model.Tokenizer;
-import dev.langchain4j.model.openai.OpenAiChatModel;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.eclipse.microprofile.config.ConfigProvider;
+
+import dev.langchain4j.model.Tokenizer;
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.openai.OpenAiChatModel.OpenAiChatModelBuilder;
+import wls.langchain4j.cdi.BeanName;
+import wls.langchain4j.cdi.BeanResolver;
+import wls.langchain4j.cdi.ConditionalProduce;
+import wls.langchain4j.cdi.ConfigurationProvider.Configuration;
 
 /**
  * Factory class for creating a configured {@link OpenAiChatModel}.
@@ -37,20 +45,15 @@ import org.eclipse.microprofile.config.ConfigProvider;
 @ApplicationScoped
 public class OpenAiChatModelFactory {
 
-    private BeanResolver beanResolver;
+    private Configuration configuration;
 
     // Required by CDI
     protected OpenAiChatModelFactory() {
     }
 
-    /**
-     * Creates {@link io.helidon.integrations.langchain4j.providers.ollama.OpenAiChatModelFactory}.
-     *
-     * @param beanResolver helper class containing methods for CDI beans resolving
-     */
     @Inject
-    public OpenAiChatModelFactory(BeanResolver beanResolver) {
-        this.beanResolver = beanResolver;
+    public OpenAiChatModelFactory(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     /**
@@ -62,48 +65,40 @@ public class OpenAiChatModelFactory {
     @ConditionalProduce(key = "langchain4j.open-ai.chat-model.enabled", value = "true")
     @Named("openAiChatModel")
     public OpenAiChatModel create() {
-        var config = MpConfig.toHelidonConfig(ConfigProvider.getConfig()).get(OpenAiChatModelConfig.CONFIG_ROOT);
-        return create(OpenAiChatModelConfig.create(config));
-    }
-
-    /**
-     * Creates and returns an {@link OpenAiChatModel} configured using the provided configuration.
-     *
-     * @param config configuration bean
-     * @return a configured instance of {@link OpenAiChatModel}
-     */
-    public OpenAiChatModel create(OpenAiChatModelConfig config) {
-        var builder = OpenAiChatModel.builder();
-        config.baseUrl().ifPresent(builder::baseUrl);
-        config.apiKey().ifPresent(builder::apiKey);
-        config.organizationId().ifPresent(builder::organizationId);
-        config.modelName().ifPresent(builder::modelName);
-        config.temperature().ifPresent(builder::temperature);
-        config.topP().ifPresent(builder::topP);
-        if (!config.stop().isEmpty()) {
-            builder.stop(config.stop());
+        OpenAiChatModelBuilder builder = OpenAiChatModel.builder();
+        configuration.getString("base-url").ifPresent(builder::baseUrl);
+        configuration.getString("api-key").ifPresent(builder::apiKey);
+        configuration.getString("organization-id").ifPresent(builder::organizationId);
+        configuration.getString("model-name").ifPresent(builder::modelName);
+        configuration.getDouble("temperature").ifPresent(builder::temperature);
+        configuration.getDouble("top-p").ifPresent(builder::topP);
+        List<String> stop = configuration.getList("stop");
+        if (!stop.isEmpty()) {
+            builder.stop(stop);
         }
-        config.maxTokens().ifPresent(builder::maxTokens);
-        config.maxCompletionTokens().ifPresent(builder::maxCompletionTokens);
-        config.presencePenalty().ifPresent(builder::presencePenalty);
-        config.frequencyPenalty().ifPresent(builder::frequencyPenalty);
-        if (!config.logitBias().isEmpty()) {
-            builder.logitBias(config.logitBias());
+        configuration.getInteger("max-tokens").ifPresent(builder::maxTokens);
+        configuration.getInteger("max-completion-tokens").ifPresent(builder::maxCompletionTokens);
+        configuration.getDouble("presence-penalty").ifPresent(builder::presencePenalty);
+        configuration.getDouble("frequency-penalty").ifPresent(builder::frequencyPenalty);
+        Map<String, Integer> logitBias = configuration.getMapInteger("logit-bias");
+        if (!logitBias.isEmpty()) {
+            builder.logitBias(logitBias);
         }
-        config.responseFormat().ifPresent(builder::responseFormat);
-        config.strictJsonSchema().ifPresent(builder::strictJsonSchema);
-        config.seed().ifPresent(builder::seed);
-        config.user().ifPresent(builder::user);
-        config.strictTools().ifPresent(builder::strictTools);
-        config.parallelToolCalls().ifPresent(builder::parallelToolCalls);
-        config.timeout().ifPresent(builder::timeout);
-        config.maxRetries().ifPresent(builder::maxRetries);
-        config.logRequests().ifPresent(builder::logRequests);
-        config.logResponses().ifPresent(builder::logResponses);
-        config.tokenizer().ifPresent(t -> builder.tokenizer(beanResolver.resolve(Tokenizer.class, BeanName.create(t))));
-        config.proxy().ifPresent(p -> builder.proxy(beanResolver.resolve(Proxy.class, BeanName.create(p))));
-        if (!config.customHeaders().isEmpty()) {
-            builder.customHeaders(config.customHeaders());
+        configuration.getString("response-format").ifPresent(builder::responseFormat);
+        configuration.getBoolean("strict-json-schema").ifPresent(builder::strictJsonSchema);
+        configuration.getInteger("seed").ifPresent(builder::seed);
+        configuration.getString("user").ifPresent(builder::user);
+        configuration.getBoolean("strict-tools").ifPresent(builder::strictTools);
+        configuration.getBoolean("parallel-tool-calls").ifPresent(builder::parallelToolCalls);
+        configuration.getLong("timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("log-responses").ifPresent(builder::logResponses);
+        configuration.getString("tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
+        configuration.getString("proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        Map<String, String> customHeaders = configuration.getMapString("custom-headers");
+        if (!customHeaders.isEmpty()) {
+            builder.customHeaders(customHeaders);
         }
         return builder.build();
     }

@@ -1,0 +1,2 @@
+wls.langchain4j.cdi.AiServiceExtension
+wls.langchain4j.cdi.ConditionalProduceExtension

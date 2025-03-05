@@ -19,14 +19,14 @@ package wls.langchain4j.cdi;
 import java.util.HashSet;
 import java.util.Set;
 
-import wls.langchain4j.api.Ai;
-
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
+
+import wls.langchain4j.api.Ai;
 
 /**
  * This class leverages CDI (Contexts and Dependency Injection) to dynamically produce declarative AI services.
@@ -68,16 +68,10 @@ public class AiServiceExtension implements Extension {
         for (Class<?> aiServiceInterface : aiServiceInterfaces) {
             abd.addBean()
                     .addType(aiServiceInterface)
-                    .createWith(ctx -> {
-                        var aiServiceFactory = resolveAiServiceFactory(beanManager);
+                    .produceWith(ctx -> {
+                        AiServiceFactory aiServiceFactory = new AiServiceFactory(beanManager);
                         return aiServiceFactory.createAiService(aiServiceInterface);
                     });
         }
-    }
-
-    private AiServiceFactory resolveAiServiceFactory(BeanManager bm) {
-        var aiServiceFactories = bm.getBeans(AiServiceFactory.class);
-        var bean = aiServiceFactories.iterator().next();
-        return (AiServiceFactory) bm.getReference(bean, AiServiceFactory.class, bm.createCreationalContext(bean));
     }
 }
