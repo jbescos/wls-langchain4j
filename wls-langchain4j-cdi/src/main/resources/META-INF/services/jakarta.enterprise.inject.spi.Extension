@@ -1,0 +1,2 @@
+com.oracle.weblogic.langchain4j.cdi.AiServiceExtension
+com.oracle.weblogic.langchain4j.cdi.ConditionalProduceExtension
