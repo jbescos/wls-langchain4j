@@ -26,9 +26,12 @@
     <version>1.0</version>
 
     <modules>
-        <module>api</module>
-        <module>cdi</module>
-        <module>openai</module>
+        <module>wls-langchain4j-api</module>
+        <module>wls-langchain4j-cdi</module>
+        <module>wls-langchain4j-open-ai</module>
+        <module>wls-langchain4j-oracle</module>
+        <module>wls-langchain4j-cohere</module>
+        <module>wls-langchain4j-ollama</module>
         <module>samples</module>
     </modules>
 
@@ -36,18 +39,12 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.lib.cdi>2.0.1</version.lib.cdi>
-        <version.lib.jaxrs>2.1.6</version.lib.jaxrs>
+        <version.lib.cdi>3.0.1</version.lib.cdi>
         <version.lib.langchain4j>0.36.2</version.lib.langchain4j>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>jakarta.ws.rs</groupId>
-                <artifactId>jakarta.ws.rs-api</artifactId>
-                <version>${version.lib.jaxrs}</version>
-            </dependency>
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j</artifactId>
@@ -56,6 +53,21 @@
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j-open-ai</artifactId>
+                <version>${version.lib.langchain4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-oracle</artifactId>
+                <version>${version.lib.langchain4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-ollama</artifactId>
+                <version>${version.lib.langchain4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-cohere</artifactId>
                 <version>${version.lib.langchain4j}</version>
             </dependency>
             <dependency>
