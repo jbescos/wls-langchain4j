@@ -1,0 +1,4 @@
+This trader will help you with:
+1. Buy/Sell crypto currencies
+2. Giving estimations about how the market is going to move
+3. Keep track of your wallet

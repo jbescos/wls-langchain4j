@@ -25,8 +25,8 @@ import com.oracle.weblogic.langchain4j.cdi.ConfigurationProvider.Configuration;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.literal.NamedLiteral;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
-import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
@@ -104,15 +104,15 @@ public class ConditionalProduceExtension implements Extension {
                         .beanClass(producerMethod.getReturnType())
                         .scope(ApplicationScoped.class)
                         .name(name)
-                        .createWith(ctx -> {
+                        .addQualifier(NamedLiteral.of(name))
+                        .produceWith(ctx -> {
                             try {
                                 // Create an instance of the declaring class
                                 Class<?> declaringClass = producerMethod.getDeclaringClass();
-                                Bean<? extends Object> bean = beanManager.resolve(beanManager.getBeans(declaringClass));
-                                Object declaringBeanInstance = beanManager.getReference(bean, declaringClass, ctx);
+                                Object factory = ctx.select(declaringClass).get();
 
                                 // Invoke the producer method to get the instance
-                                return producerMethod.invoke(declaringBeanInstance);
+                                return producerMethod.invoke(factory);
                             } catch (Exception e) {
                                 throw new RuntimeException("Failed to invoke producer method: " + producerMethod.getName(), e);
                             }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.oracle.weblogic.langchain4j.samples.coffee.shop.assistant.ai;
+package com.oracle.weblogic.langchain4j.integration;
 
 import com.oracle.weblogic.langchain4j.api.Ai;
 
@@ -22,27 +22,23 @@ import jakarta.enterprise.context.ApplicationScoped;
 import dev.langchain4j.service.SystemMessage;
 
 /**
- * AI-powered assistant service for a coffee shop.
  *
- * This service provides chat-based interactions where the AI acts as a virtual server.
- * The chat model and content provider implementations are automatically retrieved from
- * the service registry.
+ * This service provides integration test functionality.
  */
 @Ai.Service
-@Ai.ChatMemory("chatMemory")
+@Ai.ChatModel("openAiChatModel")
 @ApplicationScoped
-public interface ChatAiService {
+public interface OpenAiChatService {
 
     /**
-     * Responds to a given question in a human-friendly manner.
+     * Test method.
      *
-     * @param question the customer's question or request
-     * @return a response in natural language, adhering to the role of a coffee shop server
+     * @param testName the test name
+     * @return response defined in the system message
      */
     @SystemMessage("""
-            You are Frank - a server in a coffee shop.
-            You must not answer any questions not related to the menu or making orders.
-            Use the saveOrder callback function to save the order.
+            You are part of one integration test. You will receive a test name and you will
+            use that value to invoke the provided method.
             """)
-    String chat(String question);
+    String chatModel(String testName);
 }

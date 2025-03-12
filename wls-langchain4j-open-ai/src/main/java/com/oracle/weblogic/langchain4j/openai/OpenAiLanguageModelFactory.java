@@ -37,7 +37,7 @@ import dev.langchain4j.model.openai.OpenAiLanguageModel.OpenAiLanguageModelBuild
  * Factory class for creating a configured {@link OpenAiLanguageModel}.
  *
  * <p>This factory automatically registers a bean in the CDI registry if the configuration property
- * <i>langchain4j.open-ai.language-model.enabled</i> is set to <i>true</i>.</p>
+ * <i>langchain4j.open-ai.language-model.language-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see OpenAiLanguageModel
  * @see OpenAiLanguageModelConfig
@@ -63,7 +63,7 @@ public class OpenAiLanguageModelFactory {
 
     /**
      * Registers and produces a configured {@link OpenAiLanguageModel} bean in the CDI registry with the name
-     * <i>openAiLanguageModel</i> if the configuration property <i>langchain4j.open-ai.language-model.enabled</i> is set to
+     * <i>openAiLanguageModel</i> if the configuration property <i>langchain4j.open-ai.language-model.language-model.enabled</i> is set to
      * <i>true</i>.
      *
      * @return a configured instance of {@link OpenAiLanguageModel}
@@ -72,18 +72,18 @@ public class OpenAiLanguageModelFactory {
     @Named("openAiLanguageModel")
     public OpenAiLanguageModel create() {
         OpenAiLanguageModelBuilder builder = OpenAiLanguageModel.builder();
-        configuration.getString("langchain4j.open-ai.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.open-ai.api-key").ifPresent(builder::apiKey);
-        configuration.getString("langchain4j.open-ai.organization-id").ifPresent(builder::organizationId);
-        configuration.getString("langchain4j.open-ai.model-name").ifPresent(builder::modelName);
-        configuration.getDouble("langchain4j.open-ai.temperature").ifPresent(builder::temperature);
-        configuration.getLong("langchain4j.open-ai.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getInteger("langchain4j.open-ai.max-retries").ifPresent(builder::maxRetries);
-        configuration.getBoolean("langchain4j.open-ai.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.open-ai.log-responses").ifPresent(builder::logResponses);
-        configuration.getString("langchain4j.open-ai.tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
-        configuration.getString("langchain4j.open-ai.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
-        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.custom-headers");
+        configuration.getString("langchain4j.open-ai.language-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.open-ai.language-model.api-key").ifPresent(builder::apiKey);
+        configuration.getString("langchain4j.open-ai.language-model.organization-id").ifPresent(builder::organizationId);
+        configuration.getString("langchain4j.open-ai.language-model.model-name").ifPresent(builder::modelName);
+        configuration.getDouble("langchain4j.open-ai.language-model.temperature").ifPresent(builder::temperature);
+        configuration.getLong("langchain4j.open-ai.language-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("langchain4j.open-ai.language-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("langchain4j.open-ai.language-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.open-ai.language-model.log-responses").ifPresent(builder::logResponses);
+        configuration.getString("langchain4j.open-ai.language-model.tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
+        configuration.getString("langchain4j.open-ai.language-model.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.language-model.custom-headers");
         if (!customHeaders.isEmpty()) {
             builder.customHeaders(customHeaders);
         }

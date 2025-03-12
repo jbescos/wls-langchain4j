@@ -22,6 +22,8 @@ import com.oracle.weblogic.langchain4j.samples.coffee.shop.assistant.data.MenuIt
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -87,6 +89,17 @@ public class MenuItemsIngestor {
     @Named("EmbeddingStore")
     public EmbeddingStore<TextSegment> produceEmbeddingStore() {
         return new InMemoryEmbeddingStore<>();
+    }
+
+    /**
+     * Produces a chat memory.
+     * @return an instance of ChatMemory
+     */
+    @Produces
+    @ApplicationScoped
+    @Named("chatMemory")
+    public ChatMemory chatMemory() {
+        return MessageWindowChatMemory.builder().maxMessages(10).build();
     }
 
     /**

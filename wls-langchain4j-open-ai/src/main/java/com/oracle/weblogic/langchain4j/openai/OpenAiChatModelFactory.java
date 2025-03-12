@@ -38,7 +38,7 @@ import dev.langchain4j.model.openai.OpenAiChatModel.OpenAiChatModelBuilder;
  * Factory class for creating a configured {@link OpenAiChatModel}.
  *
  * <p>This factory automatically registers a bean in the CDI registry if the configuration property
- * <i>langchain4j.open-ai.chat-model.enabled</i> is set to <i>true</i>.</p>
+ * <i>langchain4j.open-ai.chat-model.chat-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see OpenAiChatModel
  * @see OpenAiChatModelConfig
@@ -72,37 +72,37 @@ public class OpenAiChatModelFactory {
     @Named("openAiChatModel")
     public OpenAiChatModel create() {
         OpenAiChatModelBuilder builder = OpenAiChatModel.builder();
-        configuration.getString("langchain4j.open-ai.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.open-ai.api-key").ifPresent(builder::apiKey);
-        configuration.getString("langchain4j.open-ai.organization-id").ifPresent(builder::organizationId);
-        configuration.getString("langchain4j.open-ai.model-name").ifPresent(builder::modelName);
-        configuration.getDouble("langchain4j.open-ai.temperature").ifPresent(builder::temperature);
-        configuration.getDouble("langchain4j.open-ai.top-p").ifPresent(builder::topP);
-        List<String> stop = configuration.getList("langchain4j.open-ai.stop");
+        configuration.getString("langchain4j.open-ai.chat-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.open-ai.chat-model.api-key").ifPresent(builder::apiKey);
+        configuration.getString("langchain4j.open-ai.chat-model.organization-id").ifPresent(builder::organizationId);
+        configuration.getString("langchain4j.open-ai.chat-model.model-name").ifPresent(builder::modelName);
+        configuration.getDouble("langchain4j.open-ai.chat-model.temperature").ifPresent(builder::temperature);
+        configuration.getDouble("langchain4j.open-ai.chat-model.top-p").ifPresent(builder::topP);
+        List<String> stop = configuration.getList("langchain4j.open-ai.chat-model.stop");
         if (!stop.isEmpty()) {
             builder.stop(stop);
         }
-        configuration.getInteger("langchain4j.open-ai.max-tokens").ifPresent(builder::maxTokens);
-        configuration.getInteger("langchain4j.open-ai.max-completion-tokens").ifPresent(builder::maxCompletionTokens);
-        configuration.getDouble("langchain4j.open-ai.presence-penalty").ifPresent(builder::presencePenalty);
-        configuration.getDouble("langchain4j.open-ai.frequency-penalty").ifPresent(builder::frequencyPenalty);
-        Map<String, Integer> logitBias = configuration.getMapInteger("langchain4j.open-ai.logit-bias");
+        configuration.getInteger("langchain4j.open-ai.chat-model.max-tokens").ifPresent(builder::maxTokens);
+        configuration.getInteger("langchain4j.open-ai.chat-model.max-completion-tokens").ifPresent(builder::maxCompletionTokens);
+        configuration.getDouble("langchain4j.open-ai.chat-model.presence-penalty").ifPresent(builder::presencePenalty);
+        configuration.getDouble("langchain4j.open-ai.chat-model.frequency-penalty").ifPresent(builder::frequencyPenalty);
+        Map<String, Integer> logitBias = configuration.getMapInteger("langchain4j.open-ai.chat-model.logit-bias");
         if (!logitBias.isEmpty()) {
             builder.logitBias(logitBias);
         }
-        configuration.getString("langchain4j.open-ai.response-format").ifPresent(builder::responseFormat);
-        configuration.getBoolean("langchain4j.open-ai.strict-json-schema").ifPresent(builder::strictJsonSchema);
-        configuration.getInteger("langchain4j.open-ai.seed").ifPresent(builder::seed);
-        configuration.getString("langchain4j.open-ai.user").ifPresent(builder::user);
-        configuration.getBoolean("langchain4j.open-ai.strict-tools").ifPresent(builder::strictTools);
-        configuration.getBoolean("langchain4j.open-ai.parallel-tool-calls").ifPresent(builder::parallelToolCalls);
-        configuration.getLong("langchain4j.open-ai.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getInteger("langchain4j.open-ai.max-retries").ifPresent(builder::maxRetries);
-        configuration.getBoolean("langchain4j.open-ai.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.open-ai.log-responses").ifPresent(builder::logResponses);
-        configuration.getString("langchain4j.open-ai.tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
-        configuration.getString("langchain4j.open-ai.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
-        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.custom-headers");
+        configuration.getString("langchain4j.open-ai.chat-model.response-format").ifPresent(builder::responseFormat);
+        configuration.getBoolean("langchain4j.open-ai.chat-model.strict-json-schema").ifPresent(builder::strictJsonSchema);
+        configuration.getInteger("langchain4j.open-ai.chat-model.seed").ifPresent(builder::seed);
+        configuration.getString("langchain4j.open-ai.chat-model.user").ifPresent(builder::user);
+        configuration.getBoolean("langchain4j.open-ai.chat-model.strict-tools").ifPresent(builder::strictTools);
+        configuration.getBoolean("langchain4j.open-ai.chat-model.parallel-tool-calls").ifPresent(builder::parallelToolCalls);
+        configuration.getLong("langchain4j.open-ai.chat-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("langchain4j.open-ai.chat-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("langchain4j.open-ai.chat-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.open-ai.chat-model.log-responses").ifPresent(builder::logResponses);
+        configuration.getString("langchain4j.open-ai.chat-model.tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
+        configuration.getString("langchain4j.open-ai.chat-model.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.chat-model.custom-headers");
         if (!customHeaders.isEmpty()) {
             builder.customHeaders(customHeaders);
         }

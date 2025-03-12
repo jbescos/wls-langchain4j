@@ -32,7 +32,7 @@ import dev.langchain4j.model.cohere.CohereEmbeddingModel.CohereEmbeddingModelBui
  * Factory class for creating a configured {@link CohereEmbeddingModel}.
  *
  * <p>This factory automatically registers a bean in the CDI registry if the
- * configuration property <i>langchain4j.cohere.embedding-model.enabled</i> is set to <i>true</i>.</p>
+ * configuration property <i>langchain4j.cohere.embedding-model.embedding-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see CohereEmbeddingModel
  */
@@ -58,7 +58,7 @@ public class CohereEmbeddingModelFactory {
     /**
      * Registers and produces a configured {@link dev.langchain4j.model.cohere.CohereEmbeddingModel} bean in the CDI registry
      * with the name <i>cohereEmbeddingModel</i> if the configuration property
-     * <i>langchain4j.cohere.embedding-model.enabled</i> is set to <i>true</i>.
+     * <i>langchain4j.cohere.embedding-model.embedding-model.enabled</i> is set to <i>true</i>.
      *
      * @return a configured instance of {@link dev.langchain4j.model.cohere.CohereEmbeddingModel}
      */
@@ -66,14 +66,14 @@ public class CohereEmbeddingModelFactory {
     @Named("cohereEmbeddingModel")
     public CohereEmbeddingModel create() {
         CohereEmbeddingModelBuilder builder = CohereEmbeddingModel.builder();
-        configuration.getString("langchain4j.cohere.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.cohere.api-key").ifPresent(builder::apiKey);
-        configuration.getString("langchain4j.cohere.model-name").ifPresent(builder::modelName);
-        configuration.getString("langchain4j.cohere.input-type").ifPresent(builder::inputType);
-        configuration.getLong("langchain4j.cohere.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getBoolean("langchain4j.cohere.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.cohere.log-responses").ifPresent(builder::logResponses);
-        configuration.getInteger("langchain4j.cohere.max-segments-per-batch").ifPresent(builder::maxSegmentsPerBatch);
+        configuration.getString("langchain4j.cohere.embedding-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.cohere.embedding-model.api-key").ifPresent(builder::apiKey);
+        configuration.getString("langchain4j.cohere.embedding-model.model-name").ifPresent(builder::modelName);
+        configuration.getString("langchain4j.cohere.embedding-model.input-type").ifPresent(builder::inputType);
+        configuration.getLong("langchain4j.cohere.embedding-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getBoolean("langchain4j.cohere.embedding-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.cohere.embedding-model.log-responses").ifPresent(builder::logResponses);
+        configuration.getInteger("langchain4j.cohere.embedding-model.max-segments-per-batch").ifPresent(builder::maxSegmentsPerBatch);
         return builder.build();
     }
 

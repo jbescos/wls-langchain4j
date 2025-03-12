@@ -36,7 +36,7 @@ import dev.langchain4j.model.openai.OpenAiModerationModel.OpenAiModerationModelB
  * Factory class for creating a configured {@link OpenAiModerationModel}.
  *
  * <p>This factory automatically registers a bean in the CDI registry if the configuration property
- * <i>langchain4j.open-ai.moderation-model.enabled</i> is set to <i>true</i>.</p>
+ * <i>langchain4j.open-ai.moderation-model.moderation-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see OpenAiModerationModel
  * @see OpenAiModerationModelConfig
@@ -62,7 +62,7 @@ public class OpenAiModerationModelFactory {
 
     /**
      * Registers and produces a configured {@link OpenAiModerationModel} bean in the CDI registry with the name
-     * <i>openAiModerationModel</i> if the configuration property <i>langchain4j.open-ai.moderation-model.enabled</i> is set to
+     * <i>openAiModerationModel</i> if the configuration property <i>langchain4j.open-ai.moderation-model.moderation-model.enabled</i> is set to
      * <i>true</i>.
      *
      * @return a configured instance of {@link OpenAiModerationModel}
@@ -71,15 +71,15 @@ public class OpenAiModerationModelFactory {
     @Named("openAiModerationModel")
     public OpenAiModerationModel create() {
         OpenAiModerationModelBuilder builder = OpenAiModerationModel.builder();
-        configuration.getString("langchain4j.open-ai.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.open-ai.api-key").ifPresent(builder::apiKey);
-        configuration.getString("langchain4j.open-ai.organization-id").ifPresent(builder::organizationId);
-        configuration.getString("langchain4j.open-ai.model-name").ifPresent(builder::modelName);
-        configuration.getLong("langchain4j.open-ai.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getInteger("langchain4j.open-ai.max-retries").ifPresent(builder::maxRetries);
-        configuration.getBoolean("langchain4j.open-ai.log-requests").ifPresent(builder::logRequests);
+        configuration.getString("langchain4j.open-ai.moderation-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.open-ai.moderation-model.api-key").ifPresent(builder::apiKey);
+        configuration.getString("langchain4j.open-ai.moderation-model.organization-id").ifPresent(builder::organizationId);
+        configuration.getString("langchain4j.open-ai.moderation-model.model-name").ifPresent(builder::modelName);
+        configuration.getLong("langchain4j.open-ai.moderation-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("langchain4j.open-ai.moderation-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("langchain4j.open-ai.moderation-model.log-requests").ifPresent(builder::logRequests);
         configuration.getBoolean("log-responses").ifPresent(builder::logResponses);
-        configuration.getString("langchain4j.open-ai.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        configuration.getString("langchain4j.open-ai.moderation-model.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
         Map<String, String> customHeaders = configuration.getMapString("custom-headers");
         if (!customHeaders.isEmpty()) {
             builder.customHeaders(customHeaders);

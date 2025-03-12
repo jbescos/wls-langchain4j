@@ -56,7 +56,7 @@ public class OllamaLanguageModelFactory {
 
     /**
      * Registers and produces a configured {@link dev.langchain4j.model.ollama.OllamaLanguageModel} bean in the CDI registry
-     * with the name <i>ollamaLanguageModel</i> if the configuration property <i>langchain4j.ollama.language-model.enabled</i> is
+     * with the name <i>ollamaLanguageModel</i> if the configuration property <i>langchain4j.ollama.language-model.language-model.enabled</i> is
      * set to <i>true</i>.
      *
      * @return a configured instance of {@link dev.langchain4j.model.ollama.OllamaLanguageModel}
@@ -65,24 +65,24 @@ public class OllamaLanguageModelFactory {
     @Named("ollamaLanguageModel")
     public OllamaLanguageModel create() {
         OllamaLanguageModelBuilder builder = OllamaLanguageModel.builder();
-        configuration.getString("langchain4j.ollama.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.ollama.model-name").ifPresent(builder::modelName);
-        configuration.getDouble("langchain4j.ollama.temperature").ifPresent(builder::temperature);
-        configuration.getDouble("langchain4j.ollama.top-p").ifPresent(builder::topP);
-        configuration.getInteger("langchain4j.ollama.top-k").ifPresent(builder::topK);
-        configuration.getInteger("langchain4j.ollama.seed").ifPresent(builder::seed);
-        configuration.getDouble("langchain4j.ollama.repeat-penalty").ifPresent(builder::repeatPenalty);
-        configuration.getInteger("langchain4j.ollama.num-predict").ifPresent(builder::numPredict);
-        List<String> stop = configuration.getList("langchain4j.ollama.stop");
+        configuration.getString("langchain4j.ollama.language-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.ollama.language-model.model-name").ifPresent(builder::modelName);
+        configuration.getDouble("langchain4j.ollama.language-model.temperature").ifPresent(builder::temperature);
+        configuration.getDouble("langchain4j.ollama.language-model.top-p").ifPresent(builder::topP);
+        configuration.getInteger("langchain4j.ollama.language-model.top-k").ifPresent(builder::topK);
+        configuration.getInteger("langchain4j.ollama.language-model.seed").ifPresent(builder::seed);
+        configuration.getDouble("langchain4j.ollama.language-model.repeat-penalty").ifPresent(builder::repeatPenalty);
+        configuration.getInteger("langchain4j.ollama.language-model.num-predict").ifPresent(builder::numPredict);
+        List<String> stop = configuration.getList("langchain4j.ollama.language-model.stop");
         if (!stop.isEmpty()) {
             builder.stop(stop);
         }
-        configuration.getString("langchain4j.ollama.format").ifPresent(builder::format);
-        configuration.getLong("langchain4j.ollama.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getInteger("langchain4j.ollama.max-retries").ifPresent(builder::maxRetries);
-        configuration.getBoolean("langchain4j.ollama.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.ollama.log-responses").ifPresent(builder::logResponses);
-        Map<String, String> customHeaders = configuration.getMapString("langchain4j.ollama.custom-headers");
+        configuration.getString("langchain4j.ollama.language-model.format").ifPresent(builder::format);
+        configuration.getLong("langchain4j.ollama.language-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("langchain4j.ollama.language-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("langchain4j.ollama.language-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.ollama.language-model.log-responses").ifPresent(builder::logResponses);
+        Map<String, String> customHeaders = configuration.getMapString("langchain4j.ollama.language-model.custom-headers");
         if (!customHeaders.isEmpty()) {
             builder.customHeaders(customHeaders);
         }

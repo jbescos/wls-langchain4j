@@ -18,17 +18,16 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>wls.langchain4j</groupId>
         <artifactId>samples</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>coffee-shop-assistant</artifactId>
     <packaging>war</packaging>
-    <name>coffee-shop-assistant</name>
+    <artifactId>crypto-trader</artifactId>
+    <name>crypto-trader</name>
 
     <dependencies>
         <dependency>
@@ -36,6 +35,12 @@
             <artifactId>jersey-media-json-jackson</artifactId>
             <scope>provided</scope>
             <version>3.0.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <scope>provided</scope>
+            <version>3.1.4</version>
         </dependency>
         <dependency>
             <groupId>jakarta.enterprise</groupId>
@@ -54,4 +59,5 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>

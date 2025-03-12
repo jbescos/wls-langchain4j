@@ -3,6 +3,6 @@ This is a demo application showcasing the integration with LangChain4J. It demon
 
 Compile it with: `$ mvn clean package`
 
-Deploy the war generated under: `target/coffee-shop-assistant-1.0.war`
+Deploy the war generated under: `target/coffee-shop-assistant.war`
 
-Use it in this way: `http://localhost:7001/coffee-shop-assistant-1.0/chat?question=Hello, I want a coffee`
+Use it in this way: `http://localhost:7001/coffee-shop-assistant/chat?question=Hello, I want a coffee`

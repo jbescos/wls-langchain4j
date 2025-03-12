@@ -57,7 +57,7 @@ public class OllamaChatModelFactory {
 
     /**
      * Registers and produces a configured {@link OllamaChatModel} bean in the CDI registry with the name
-     * <i>ollamaChatModel</i> if the configuration property <i>langchain4j.ollama.chat-model.enabled</i> is set to <i>true</i>.
+     * <i>ollamaChatModel</i> if the configuration property <i>langchain4j.ollama.chat-model.chat-model.enabled</i> is set to <i>true</i>.
      *
      * @return a configured instance of {@link OllamaChatModel}
      */
@@ -65,24 +65,24 @@ public class OllamaChatModelFactory {
     @Named("ollamaChatModel")
     public OllamaChatModel create() {
         OllamaChatModelBuilder builder = OllamaChatModel.builder();
-        configuration.getString("langchain4j.ollama.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.ollama.model-name").ifPresent(builder::modelName);
-        configuration.getDouble("langchain4j.ollama.temperature").ifPresent(builder::temperature);
-        configuration.getDouble("langchain4j.ollama.top-p").ifPresent(builder::topP);
-        configuration.getInteger("langchain4j.ollama.top-k").ifPresent(builder::topK);
-        configuration.getInteger("langchain4j.ollama.seed").ifPresent(builder::seed);
-        configuration.getDouble("langchain4j.ollama.repeat-penalty").ifPresent(builder::repeatPenalty);
-        configuration.getInteger("langchain4j.ollama.num-predict").ifPresent(builder::numPredict);
-        List<String> stop = configuration.getList("langchain4j.ollama.stop");
+        configuration.getString("langchain4j.ollama.chat-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.ollama.chat-model.model-name").ifPresent(builder::modelName);
+        configuration.getDouble("langchain4j.ollama.chat-model.temperature").ifPresent(builder::temperature);
+        configuration.getDouble("langchain4j.ollama.chat-model.top-p").ifPresent(builder::topP);
+        configuration.getInteger("langchain4j.ollama.chat-model.top-k").ifPresent(builder::topK);
+        configuration.getInteger("langchain4j.ollama.chat-model.seed").ifPresent(builder::seed);
+        configuration.getDouble("langchain4j.ollama.chat-model.repeat-penalty").ifPresent(builder::repeatPenalty);
+        configuration.getInteger("langchain4j.ollama.chat-model.num-predict").ifPresent(builder::numPredict);
+        List<String> stop = configuration.getList("langchain4j.ollama.chat-model.stop");
         if (!stop.isEmpty()) {
             builder.stop(stop);
         }
-        configuration.getString("langchain4j.ollama.format").ifPresent(builder::format);
-        configuration.getLong("langchain4j.ollama.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getInteger("langchain4j.ollama.max-retries").ifPresent(builder::maxRetries);
-        configuration.getBoolean("langchain4j.ollama.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.ollama.log-responses").ifPresent(builder::logResponses);
-        Map<String, String> customHeaders = configuration.getMapString("langchain4j.ollama.custom-headers");
+        configuration.getString("langchain4j.ollama.chat-model.format").ifPresent(builder::format);
+        configuration.getLong("langchain4j.ollama.chat-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("langchain4j.ollama.chat-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("langchain4j.ollama.chat-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.ollama.chat-model.log-responses").ifPresent(builder::logResponses);
+        Map<String, String> customHeaders = configuration.getMapString("langchain4j.ollama.chat-model.custom-headers");
         if (!customHeaders.isEmpty()) {
             builder.customHeaders(customHeaders);
         }

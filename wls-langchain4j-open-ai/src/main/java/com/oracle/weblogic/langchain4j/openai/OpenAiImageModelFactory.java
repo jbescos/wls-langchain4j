@@ -37,7 +37,7 @@ import dev.langchain4j.model.openai.OpenAiImageModel.OpenAiImageModelBuilder;
  * Factory class for creating a configured {@link OpenAiImageModel}.
  *
  * <p>This factory automatically registers a bean in the CDI registry if the configuration property
- * <i>langchain4j.open-ai.image-model.enabled</i> is set to <i>true</i>.</p>
+ * <i>langchain4j.open-ai.image-model.image-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see OpenAiImageModel
  * @see OpenAiImageModelConfig
@@ -63,7 +63,7 @@ public class OpenAiImageModelFactory {
 
     /**
      * Registers and produces a configured {@link OpenAiImageModel} bean in the CDI registry with the name
-     * <i>openAiImageModel</i> if the configuration property <i>langchain4j.open-ai.image-model.enabled</i> is set to <i>true</i>.
+     * <i>openAiImageModel</i> if the configuration property <i>langchain4j.open-ai.image-model.image-model.enabled</i> is set to <i>true</i>.
      *
      * @return a configured instance of {@link OpenAiImageModel}
      */
@@ -71,23 +71,23 @@ public class OpenAiImageModelFactory {
     @Named("openAiImageModel")
     public OpenAiImageModel create() {
         OpenAiImageModelBuilder builder = OpenAiImageModel.builder();
-        configuration.getString("langchain4j.open-ai.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.open-ai.api-key").ifPresent(builder::apiKey);
-        configuration.getString("langchain4j.open-ai.organization-id").ifPresent(builder::organizationId);
-        configuration.getString("langchain4j.open-ai.model-name").ifPresent(builder::modelName);
-        configuration.getString("langchain4j.open-ai.size").ifPresent(builder::size);
-        configuration.getString("langchain4j.open-ai.quality").ifPresent(builder::quality);
-        configuration.getString("langchain4j.open-ai.style").ifPresent(builder::style);
-        configuration.getString("langchain4j.open-ai.user").ifPresent(builder::user);
-        configuration.getString("langchain4j.open-ai.response-format").ifPresent(builder::responseFormat);
-        configuration.getLong("langchain4j.open-ai.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getInteger("langchain4j.open-ai.max-retries").ifPresent(builder::maxRetries);
-        configuration.getBoolean("langchain4j.open-ai.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.open-ai.log-responses").ifPresent(builder::logResponses);
-        configuration.getBoolean("langchain4j.open-ai.with-persisting").ifPresent(builder::withPersisting);
-        configuration.getString("langchain4j.open-ai.persist-to").ifPresent(value -> builder.persistTo(Path.of(value)));
-        configuration.getString("langchain4j.open-ai.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
-        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.custom-headers");
+        configuration.getString("langchain4j.open-ai.image-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.open-ai.image-model.api-key").ifPresent(builder::apiKey);
+        configuration.getString("langchain4j.open-ai.image-model.organization-id").ifPresent(builder::organizationId);
+        configuration.getString("langchain4j.open-ai.image-model.model-name").ifPresent(builder::modelName);
+        configuration.getString("langchain4j.open-ai.image-model.size").ifPresent(builder::size);
+        configuration.getString("langchain4j.open-ai.image-model.quality").ifPresent(builder::quality);
+        configuration.getString("langchain4j.open-ai.image-model.style").ifPresent(builder::style);
+        configuration.getString("langchain4j.open-ai.image-model.user").ifPresent(builder::user);
+        configuration.getString("langchain4j.open-ai.image-model.response-format").ifPresent(builder::responseFormat);
+        configuration.getLong("langchain4j.open-ai.image-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("langchain4j.open-ai.image-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("langchain4j.open-ai.image-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.open-ai.image-model.log-responses").ifPresent(builder::logResponses);
+        configuration.getBoolean("langchain4j.open-ai.image-model.with-persisting").ifPresent(builder::withPersisting);
+        configuration.getString("langchain4j.open-ai.image-model.persist-to").ifPresent(value -> builder.persistTo(Path.of(value)));
+        configuration.getString("langchain4j.open-ai.image-model.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.image-model.custom-headers");
         if (!customHeaders.isEmpty()) {
             builder.customHeaders(customHeaders);
         }

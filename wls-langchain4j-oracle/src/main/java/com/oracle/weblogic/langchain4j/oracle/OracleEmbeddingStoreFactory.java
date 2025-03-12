@@ -57,7 +57,7 @@ public class OracleEmbeddingStoreFactory {
 
     /**
      * Registers and produces a configured {@link OracleEmbeddingStore} bean in the CDI registry with the name
-     * <i>openAiChatModel</i> if the configuration property <i>langchain4j.oracle.embedding-store.enabled</i> is set to
+     * <i>openAiChatModel</i> if the configuration property <i>langchain4j.oracle.embedding-store.embedding-store.enabled</i> is set to
      * <i>true</i>.
      *
      * @return a configured instance of {@link OracleEmbeddingStore}
@@ -66,27 +66,27 @@ public class OracleEmbeddingStoreFactory {
     @Named("oracleEmbeddingStore")
     public OracleEmbeddingStore create() {
         OracleEmbeddingStore.Builder builder = OracleEmbeddingStore.builder();
-        configuration.getString("langchain4j.oracle.data-source").ifPresent(bn -> builder.dataSource(BeanResolver.resolve(DataSource.class, bn)));
-        configuration.getBoolean("langchain4j.oracle.embedding-table").ifPresent(b -> {
+        configuration.getString("langchain4j.oracle.embedding-store.data-source").ifPresent(bn -> builder.dataSource(BeanResolver.resolve(DataSource.class, bn)));
+        configuration.getBoolean("langchain4j.oracle.embedding-store.embedding-table").ifPresent(b -> {
                 if (b) {
                     builder.embeddingTable(creatembeddingTable());
                 }
             }
         );
-        configuration.getBoolean("langchain4j.oracle.exact-search").ifPresent(builder::exactSearch);
-        configuration.getString("langchain4j.oracle.vector-index").ifPresent(v -> builder.vectorIndex(CreateOption.valueOf(v)));
+        configuration.getBoolean("langchain4j.oracle.embedding-store.exact-search").ifPresent(builder::exactSearch);
+        configuration.getString("langchain4j.oracle.embedding-store.vector-index").ifPresent(v -> builder.vectorIndex(CreateOption.valueOf(v)));
 
         return builder.build();
     }
 
     private EmbeddingTable creatembeddingTable() {
         EmbeddingTable.Builder builder = EmbeddingTable.builder();
-        configuration.getString("langchain4j.oracle.create-option").ifPresent(v -> builder.createOption(CreateOption.valueOf(v)));
-        configuration.getString("langchain4j.oracle.name").ifPresent(builder::name);
-        configuration.getString("langchain4j.oracle.id-column").ifPresent(builder::idColumn);
-        configuration.getString("langchain4j.oracle.embedding-column").ifPresent(builder::embeddingColumn);
-        configuration.getString("langchain4j.oracle.text-column").ifPresent(builder::textColumn);
-        configuration.getString("langchain4j.oracle.meta-column").ifPresent(builder::metadataColumn);
+        configuration.getString("langchain4j.oracle.embedding-store.create-option").ifPresent(v -> builder.createOption(CreateOption.valueOf(v)));
+        configuration.getString("langchain4j.oracle.embedding-store.name").ifPresent(builder::name);
+        configuration.getString("langchain4j.oracle.embedding-store.id-column").ifPresent(builder::idColumn);
+        configuration.getString("langchain4j.oracle.embedding-store.embedding-column").ifPresent(builder::embeddingColumn);
+        configuration.getString("langchain4j.oracle.embedding-store.text-column").ifPresent(builder::textColumn);
+        configuration.getString("langchain4j.oracle.embedding-store.meta-column").ifPresent(builder::metadataColumn);
 
         return builder.build();
     }

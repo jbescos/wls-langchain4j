@@ -37,7 +37,7 @@ import dev.langchain4j.model.openai.OpenAiEmbeddingModel.OpenAiEmbeddingModelBui
  * Factory class for creating a configured {@link OpenAiEmbeddingModel}.
  *
  * <p>This factory automatically registers a bean in the CDI registry if the
- * configuration property <i>langchain4j.open-ai.embedding-model.enabled</i> is set to <i>true</i>.</p>
+ * configuration property <i>langchain4j.open-ai.embedding-model.embedding-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see OpenAiEmbeddingModel
  */
@@ -63,7 +63,7 @@ public class OpenAiEmbeddingModelFactory {
     /**
      * Registers and produces a configured {@link dev.langchain4j.model.openai.OpenAiEmbeddingModel} bean in the CDI registry
      * with the name <i>openAiEmbeddingModel</i> if the configuration property
-     * <i>langchain4j.open-ai.embedding-model.enabled</i> is set to <i>true</i>.
+     * <i>langchain4j.open-ai.embedding-model.embedding-model.enabled</i> is set to <i>true</i>.
      *
      * @return a configured instance of {@link dev.langchain4j.model.openai.OpenAiEmbeddingModel}
      */
@@ -71,19 +71,19 @@ public class OpenAiEmbeddingModelFactory {
     @Named("openAiEmbeddingModel")
     public OpenAiEmbeddingModel create() {
         OpenAiEmbeddingModelBuilder builder = OpenAiEmbeddingModel.builder();
-        configuration.getString("langchain4j.open-ai.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.open-ai.api-key").ifPresent(builder::apiKey);
-        configuration.getString("langchain4j.open-ai.organization-id").ifPresent(builder::organizationId);
-        configuration.getString("langchain4j.open-ai.model-name").ifPresent(builder::modelName);
-        configuration.getInteger("langchain4j.open-ai.dimensions").ifPresent(builder::dimensions);
-        configuration.getString("langchain4j.open-ai.user").ifPresent(builder::user);
-        configuration.getLong("langchain4j.open-ai.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getInteger("langchain4j.open-ai.max-retries").ifPresent(builder::maxRetries);
-        configuration.getBoolean("langchain4j.open-ai.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.open-ai.log-responses").ifPresent(builder::logResponses);
-        configuration.getString("langchain4j.open-ai.tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
-        configuration.getString("langchain4j.open-ai.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
-        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.custom-headers");
+        configuration.getString("langchain4j.open-ai.embedding-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.open-ai.embedding-model.api-key").ifPresent(builder::apiKey);
+        configuration.getString("langchain4j.open-ai.embedding-model.organization-id").ifPresent(builder::organizationId);
+        configuration.getString("langchain4j.open-ai.embedding-model.model-name").ifPresent(builder::modelName);
+        configuration.getInteger("langchain4j.open-ai.embedding-model.dimensions").ifPresent(builder::dimensions);
+        configuration.getString("langchain4j.open-ai.embedding-model.user").ifPresent(builder::user);
+        configuration.getLong("langchain4j.open-ai.embedding-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getInteger("langchain4j.open-ai.embedding-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getBoolean("langchain4j.open-ai.embedding-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.open-ai.embedding-model.log-responses").ifPresent(builder::logResponses);
+        configuration.getString("langchain4j.open-ai.embedding-model.tokenizer").ifPresent(t -> builder.tokenizer(BeanResolver.resolve(Tokenizer.class, BeanName.create(t))));
+        configuration.getString("langchain4j.open-ai.embedding-model.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        Map<String, String> customHeaders = configuration.getMapString("langchain4j.open-ai.embedding-model.custom-headers");
         if (!customHeaders.isEmpty()) {
             builder.customHeaders(customHeaders);
         }

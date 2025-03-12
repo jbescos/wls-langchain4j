@@ -35,7 +35,7 @@ import dev.langchain4j.model.cohere.CohereScoringModel.CohereScoringModelBuilder
  * Factory class for creating a configured {@link dev.langchain4j.model.cohere.CohereScoringModel}.
  *
  * <p>This factory automatically registers a bean in the CDI registry if the
- * configuration property <i>langchain4j.cohere.scoring-model.enabled</i> is set to <i>true</i>.</p>
+ * configuration property <i>langchain4j.cohere.scoring-model.scoring-model.enabled</i> is set to <i>true</i>.</p>
  *
  * @see dev.langchain4j.model.cohere.CohereScoringModel
  */
@@ -61,7 +61,7 @@ public class CohereScoringModelFactory {
     /**
      * Registers and produces a configured {@link dev.langchain4j.model.cohere.CohereScoringModel} bean in the CDI registry
      * with the name <i>cohereScoringModel</i> if the configuration property
-     * <i>langchain4j.cohere.scoring-model.enabled</i> is set to <i>true</i>.
+     * <i>langchain4j.cohere.scoring-model.scoring-model.enabled</i> is set to <i>true</i>.
      *
      * @return a configured instance of {@link dev.langchain4j.model.cohere.CohereScoringModel}
      */
@@ -69,14 +69,14 @@ public class CohereScoringModelFactory {
     @Named("cohereScoringModel")
     public CohereScoringModel create() {
         CohereScoringModelBuilder builder = CohereScoringModel.builder();
-        configuration.getString("langchain4j.cohere.base-url").ifPresent(builder::baseUrl);
-        configuration.getString("langchain4j.cohere.api-key").ifPresent(builder::apiKey);
-        configuration.getString("langchain4j.cohere.model-name").ifPresent(builder::modelName);
-        configuration.getLong("langchain4j.cohere.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
-        configuration.getBoolean("langchain4j.cohere.log-requests").ifPresent(builder::logRequests);
-        configuration.getBoolean("langchain4j.cohere.log-responses").ifPresent(builder::logResponses);
-        configuration.getInteger("langchain4j.cohere.max-retries").ifPresent(builder::maxRetries);
-        configuration.getString("langchain4j.cohere.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
+        configuration.getString("langchain4j.cohere.scoring-model.base-url").ifPresent(builder::baseUrl);
+        configuration.getString("langchain4j.cohere.scoring-model.api-key").ifPresent(builder::apiKey);
+        configuration.getString("langchain4j.cohere.scoring-model.model-name").ifPresent(builder::modelName);
+        configuration.getLong("langchain4j.cohere.scoring-model.timeout").ifPresent(timeout -> builder.timeout(Duration.ofMillis(timeout)));
+        configuration.getBoolean("langchain4j.cohere.scoring-model.log-requests").ifPresent(builder::logRequests);
+        configuration.getBoolean("langchain4j.cohere.scoring-model.log-responses").ifPresent(builder::logResponses);
+        configuration.getInteger("langchain4j.cohere.scoring-model.max-retries").ifPresent(builder::maxRetries);
+        configuration.getString("langchain4j.cohere.scoring-model.proxy").ifPresent(p -> builder.proxy(BeanResolver.resolve(Proxy.class, BeanName.create(p))));
         return builder.build();
     }
 }
