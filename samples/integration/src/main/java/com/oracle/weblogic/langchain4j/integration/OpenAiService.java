@@ -19,26 +19,17 @@ import com.oracle.weblogic.langchain4j.api.Ai;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import dev.langchain4j.service.SystemMessage;
-
 /**
  *
  * This service provides integration test functionality.
  */
 @Ai.Service
 @Ai.ChatModel("openAiChatModel")
+@Ai.StreamingChatModel("openAiStreamingChatModel")
+//@Ai.ModerationModel("openAiModerationModel")
+//@Ai.ChatLanguageModel("openAiLanguageModel")
+//@Ai.EmbeddingModel("openAiEmbeddingModel")
+//@Ai.ImageModel("openAiImageModel")
 @ApplicationScoped
-public interface OpenAiChatService {
-
-    /**
-     * Test method.
-     *
-     * @param testName the test name
-     * @return response defined in the system message
-     */
-    @SystemMessage("""
-            You are part of one integration test. You will receive a test name and you will
-            use that value to invoke the provided method.
-            """)
-    String chatModel(String testName);
+public interface OpenAiService extends BaseAiService {
 }

@@ -15,27 +15,35 @@
  */
 package com.oracle.weblogic.langchain4j.integration;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+
+import dev.langchain4j.service.TokenStream;
 
 /**
  * REST resource for interacting with the AI-powered resources.
  *
  */
 @ApplicationScoped
-@Path("/chat")
-public class ChatResource {
+@Path("/")
+public class Resource {
 
-    private OpenAiChatService openAiChatService;
-    private OllamaChatService ollamaChatService;
+    private static final Logger LOGGER = Logger.getLogger(Resource.class.getName());
+    private OpenAiService openAiService;
+    private OllamaService ollamaService;
 
     // Required by CDI
-    protected ChatResource() {
+    Resource() {
     }
 
     /**
@@ -43,36 +51,90 @@ public class ChatResource {
      *
      */
     @Inject
-    public ChatResource(OpenAiChatService chatAiService, OllamaChatService ollamaChatService) {
-        this.openAiChatService = chatAiService;
-        this.ollamaChatService = ollamaChatService;
+    public Resource(OpenAiService chatAiService, OllamaService ollamaChatService) {
+        this.openAiService = chatAiService;
+        this.ollamaService = ollamaChatService;
     }
 
     /**
-     * Handles chat requests by forwarding the test name to the AI assistant.
+     * Handles requests by forwarding to the AI assistant.
      *
-     *
-     * @param testName the test name
      * @return the AI assistant's response in plain text
      */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/open-ai")
-    public String openAi(@QueryParam("testName") String testName) {
-        return openAiChatService.chatModel(testName);
+    @Path("/open-ai/chat")
+    public String openAiChat() {
+        return chat(openAiService);
     }
 
     /**
-     * Handles chat requests by forwarding the test name to the AI assistant.
+     * Handles requests by forwarding to the AI assistant.
      *
-     *
-     * @param testName the test name
      * @return the AI assistant's response in plain text
      */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/ollama")
-    public String ollama(@QueryParam("testName") String testName) {
-        return ollamaChatService.chatModel(testName);
+    @Path("/open-ai/stream")
+    public String openAiStream() {
+        return stream(openAiService);
+    }
+
+    /**
+     * Handles requests by forwarding to the AI assistant.
+     *
+     * @return the AI assistant's response in plain text
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/ollama/chat")
+    public String ollama() {
+        return chat(ollamaService);
+    }
+
+    /**
+     * Handles requests by forwarding to the AI assistant.
+     *
+     * @return the AI assistant's response in plain text
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/ollama/stream")
+    public String ollamaStream() {
+        return stream(ollamaService);
+    }
+
+    private String stream(BaseAiService service) {
+        try {
+            TokenStream stream = service.stream("Stream model");
+            AtomicReference<String> ref = new AtomicReference<>();
+            CountDownLatch latch = new CountDownLatch(1);
+            stream.onNext(s -> LOGGER.info(s));
+            stream.onError(t -> LOGGER.log(Level.SEVERE, "Stream failed", t));
+            stream.onComplete(r -> {
+               ref.set(r.content().text());
+               LOGGER.info(r.content().text());
+               latch.countDown();
+            });
+            stream.start();
+            latch.await(20000, TimeUnit.MILLISECONDS);
+            if (ref.get() != null) {
+                return ref.get();
+            } else {
+                return "failed";
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Stream failed", e);
+            return "ERROR: " + e.getMessage();
+        }
+    }
+
+    private String chat(BaseAiService service) {
+        try {
+            return service.chat("Chat model");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Stream failed", e);
+            return "ERROR: " + e.getMessage();
+        }
     }
 }
