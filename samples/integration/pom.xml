@@ -35,30 +35,30 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>jakarta.ws.rs-api</artifactId>
-            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>wls.langchain4j</groupId>
             <artifactId>wls-langchain4j-cohere</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>wls.langchain4j</groupId>
             <artifactId>wls-langchain4j-open-ai</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>wls.langchain4j</groupId>
             <artifactId>wls-langchain4j-ollama</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>wls.langchain4j</groupId>
             <artifactId>wls-langchain4j-oracle</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

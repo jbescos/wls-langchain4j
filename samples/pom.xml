@@ -36,4 +36,44 @@
     <build>
         <finalName>${project.name}</finalName>
     </build>
+
+    <properties>
+        <version.lib.jax-rs>3.0.0</version.lib.jax-rs>
+        <version.lib.jsonb>2.0.0</version.lib.jsonb>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>jakarta.json.bind</groupId>
+                <artifactId>jakarta.json.bind-api</artifactId>
+                <version>${version.lib.jsonb}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>${version.lib.jax-rs}</version>
+            </dependency>
+            <dependency>
+                <groupId>wls.langchain4j</groupId>
+                <artifactId>wls-langchain4j-cohere</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>wls.langchain4j</groupId>
+                <artifactId>wls-langchain4j-open-ai</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>wls.langchain4j</groupId>
+                <artifactId>wls-langchain4j-ollama</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>wls.langchain4j</groupId>
+                <artifactId>wls-langchain4j-oracle</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

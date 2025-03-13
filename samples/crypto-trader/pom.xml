@@ -38,13 +38,11 @@
         <dependency>
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>jakarta.ws.rs-api</artifactId>
-            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>wls.langchain4j</groupId>
             <artifactId>wls-langchain4j-open-ai</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
