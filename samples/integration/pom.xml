@@ -42,7 +42,22 @@
         </dependency>
         <dependency>
             <groupId>wls.langchain4j</groupId>
+            <artifactId>wls-langchain4j-cohere</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>wls.langchain4j</groupId>
             <artifactId>wls-langchain4j-open-ai</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>wls.langchain4j</groupId>
+            <artifactId>wls-langchain4j-ollama</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>wls.langchain4j</groupId>
+            <artifactId>wls-langchain4j-oracle</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
