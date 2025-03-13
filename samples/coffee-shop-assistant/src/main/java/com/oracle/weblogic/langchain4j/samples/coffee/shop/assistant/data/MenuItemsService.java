@@ -15,13 +15,12 @@
  */
 package com.oracle.weblogic.langchain4j.samples.coffee.shop.assistant.data;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 
 /**
  * A service for managing and retrieving menu items from a JSON file.
@@ -40,11 +39,11 @@ public class MenuItemsService {
      * @throws RuntimeException if an error occurs while reading or parsing the file
      */
     public List<MenuItem> getMenuItems() {
-        var objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(getClass().getResourceAsStream(MENU), new TypeReference<>() {});
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read menu items from file: " + MENU, e);
+        try (Jsonb jsonb = JsonbBuilder.create()) {
+            return jsonb.fromJson(MenuItemsService.class.getResourceAsStream(MENU),
+                    new ArrayList<MenuItem>() {}.getClass().getGenericSuperclass());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse menu items from JSONB", e);
         }
     }
 }
