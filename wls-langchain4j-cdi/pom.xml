@@ -36,6 +36,7 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>wls.langchain4j</groupId>
