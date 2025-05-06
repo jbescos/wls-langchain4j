@@ -15,7 +15,10 @@
  */
 package com.oracle.weblogic.langchain4j.samples.coffee.shop.assistant.rest;
 
+import java.util.logging.Logger;
+
 import com.oracle.weblogic.langchain4j.samples.coffee.shop.assistant.ai.ChatAiService;
+import com.oracle.weblogic.langchain4j.samples.coffee.shop.assistant.data.OrderService;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -35,6 +38,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/chat")
 public class ChatBotResource {
 
+    private static final Logger LOGGER = Logger.getLogger(ChatBotResource.class.getName());
     private ChatAiService chatAiService;
 
     // Required by CDI
@@ -63,6 +67,9 @@ public class ChatBotResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String chatWithAssistant(@QueryParam("question") String question) {
-        return chatAiService.chat(question);
+        LOGGER.info("Question: " + question);
+        String response = chatAiService.chat(question);
+        LOGGER.info("Response: " + response);
+        return response;
     }
 }

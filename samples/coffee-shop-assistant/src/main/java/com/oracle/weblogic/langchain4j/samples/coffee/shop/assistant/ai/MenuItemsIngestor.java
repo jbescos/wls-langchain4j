@@ -131,7 +131,7 @@ public class MenuItemsIngestor {
         // Feed it to the ingestor to create embeddings and store them in embedding storage
         ingestor.ingest(documents);
 
-        LOGGER.info("Ingested menu items: " + documents.size());
+        LOGGER.info("Ingested menu items: " + documents.size() + "\n" + documents);
     }
 
     /**
