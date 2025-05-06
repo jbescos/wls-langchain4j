@@ -6,3 +6,6 @@ Compile it with: `$ mvn clean package`
 Deploy the war generated under: `target/crypto-trader.war`
 
 Use it in this way: `http://localhost:7001/crypto-trader/trader/chat?text=I want to buy 4 BTC`
+
+## Copyright
+Copyright (c) 2025, Oracle and/or its affiliates.

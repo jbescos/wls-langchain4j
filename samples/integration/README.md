@@ -11,3 +11,6 @@ Test OpenAI Chat Model: `http://localhost:7001/integration/open-ai/chat`
 Test OpenAI Stream Chat Model: `http://localhost:7001/integration/open-ai/stream`
 Test Ollama Chat Model: `http://localhost:7001/integration/ollama/chat`
 Test Ollama Stream Chat Model: `http://localhost:7001/integration/ollama/stream`
+
+## Copyright
+Copyright (c) 2025, Oracle and/or its affiliates.
