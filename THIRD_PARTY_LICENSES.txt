@@ -167,15 +167,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 "okhttp" (com.squareup.okhttp3:okhttp)
 "okhttp" (com.squareup.okhttp3:okhttp-sse)
   The Apache Software License, Version 2.0
+  Copyright (C) 2011 The Android Open Source Project
+  Copyright (C) 2018 Square, Inc.
+  Copyright (C) 2012 Google Inc.
 --------------------------------------------
 "okio" (com.squareup.okio:okio)
 "okio" (com.squareup.okio:okio-jvm)
   The Apache Software License, Version 2.0
+  Copyright (C) 2013 Square, Inc.
 --------------------------------------------
 "Kotlin Stdlib Jdk8" (org.jetbrains.kotlin:kotlin-stdlib-jdk8)
 "Kotlin Stdlib" (org.jetbrains.kotlin:kotlin-stdlib)
 "Kotlin Stdlib Common" (org.jetbrains.kotlin:kotlin-stdlib-common)
   The Apache License, Version 2.0
+  Copyright 2010-2018 JetBrains s.r.o. and Kotlin Programming Language contributors.
 --------------------------------------------
 "IntelliJ IDEA Annotations" (org.jetbrains:annotations)
   The Apache Software License, Version 2.0
@@ -184,6 +189,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --------------------------------------------
 "Kotlin Stdlib Jdk7" (org.jetbrains.kotlin:kotlin-stdlib-jdk7)
   The Apache License, Version 2.0
+  Copyright 2010-2018 JetBrains s.r.o. and Kotlin Programming Language contributors.
 --------------------------------------------
 "Java Client for OpenAI (ChatGPT)" (dev.ai4j:openai4j)
   Apache-2.0
@@ -197,30 +203,41 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --------------------------------------------
 "ONNX Runtime" (com.microsoft.onnxruntime:onnxruntime)
   MIT License
+  Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
 --------------------------------------------
 "AI DJL API" (ai.djl:api)
   Apache License, Version 2.0
+  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 --------------------------------------------
 "HuggingFace Tokenizers for DJL" (ai.djl.huggingface:tokenizers)
   Apache License, Version 2.0
+  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 --------------------------------------------
 "jtokkit" (com.knuddels:jtokkit)
   Apache License, Version 2.0
 --------------------------------------------
 "Commons Compress" (org.apache.commons:commons-compress)
   Apache License, Version 2.0
+  Copyright 2002-2024 The Apache Software Foundation
 --------------------------------------------
 "Commons Codec" (commons-codec:commons-codec)
   Apache License, Version 2.0
+  Copyright 2002-2024 The Apache Software Foundation
 --------------------------------------------
 "Commons IO" (commons-io:commons-io)
   Apache License, Version 2.0
+  Copyright 2002-2024 The Apache Software Foundation
 --------------------------------------------
 "JNA" (net.java.dev.jna:jna)
   Apache License, Version 2.0
+  Copyright (c) 2007 Timothy Wall, All Rights Reserved
+  Copyright (c) 2021 Matthias Bläsing, All Rights Reserved
+  Copyright (c) 2007 Wayne Meissner, All Rights Reserved
+  Copyright (c) 2022 Carlos Ballesteros, All Rights Reserved
 --------------------------------------------
 "Oracle JDBC Driver" (com.oracle.database.jdbc:ojdbc8)
   Oracle Free Use Terms and Conditions (FUTC)
+  Copyright (c) 2024 Oracle and/or its affiliates. All rights reserved.
 --------------------------------------------
 
 =======================================================================
