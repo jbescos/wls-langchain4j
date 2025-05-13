@@ -216,15 +216,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 "jtokkit" (com.knuddels:jtokkit)
   Apache License, Version 2.0
 --------------------------------------------
-"Commons Compress" (org.apache.commons:commons-compress)
+"Apache Commons Compress" (org.apache.commons:commons-compress)
   Apache License, Version 2.0
   Copyright 2002-2024 The Apache Software Foundation
 --------------------------------------------
-"Commons Codec" (commons-codec:commons-codec)
+"Apache Commons Codec" (commons-codec:commons-codec)
   Apache License, Version 2.0
   Copyright 2002-2024 The Apache Software Foundation
 --------------------------------------------
-"Commons IO" (commons-io:commons-io)
+"Apache Commons IO" (commons-io:commons-io)
   Apache License, Version 2.0
   Copyright 2002-2024 The Apache Software Foundation
 --------------------------------------------
